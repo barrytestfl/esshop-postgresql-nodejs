@@ -8,13 +8,13 @@
         password: "123456",
         database: "eshop",
         entities: [
-            "src/entity/*{.ts,.js}"
+            "src/entities/*{.ts,.js}"
           ],
         subscribers: [
-            "src/subscriber/*{.ts,.js}"
+            "src/subscribers/*{.ts,.js}"
           ],
         migrations: [
-            "src/migration/*{.ts,.js}"
+            "src/migrations/*{.ts,.js}"
           ],        
         synchronize: true,
         logging: false
