@@ -3,7 +3,7 @@ import cookieParser from 'cookie-parser'
 import IController from './interfaces/IController';
 import errormiddleware from './middlewares/errormiddleware';
 
-import config,{AppDataSource} from './utils/ormcong';
+import AppDataSource from './utils/ormcong';
 
 
 class App{

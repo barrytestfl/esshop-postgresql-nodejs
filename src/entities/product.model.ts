@@ -45,8 +45,8 @@ class Product{
     public Garranty:string;
     @Column()
     public ProductVideo:string;
-    @Column()
-    public Images?:[string];
+    // @Column()
+    // public Images?:[string];
     @Column()
     public InStock:number=0;
     @Column()

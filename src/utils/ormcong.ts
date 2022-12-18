@@ -1,6 +1,6 @@
     import { DataSourceOptions ,DataSource} from 'typeorm';
 
-    export const AppDataSource = new DataSource({
+    const AppDataSource = new DataSource({
         type: "postgres",
         host: "localhost",
         port: 5432,
@@ -19,26 +19,27 @@
         synchronize: true,
         logging: false
     })
-    const config: DataSourceOptions = {
-    type: 'postgres',
-    host: process.env.POSTGRESQL_PATH,
-    port: Number(process.env.POSTGRES_PORT),
-    username: process.env.POSTGRES_USER,
-    password: process.env.POSTGRES_PASSWORD,
-    database: process.env.POSTGRES_DATABASENAME,
+    export default AppDataSource; 
+    // const config: DataSourceOptions = {
+    // type: 'postgres',
+    // host: process.env.POSTGRESQL_PATH,
+    // port: Number(process.env.POSTGRES_PORT),
+    // username: process.env.POSTGRES_USER,
+    // password: process.env.POSTGRES_PASSWORD,
+    // database: process.env.POSTGRES_DATABASENAME,
+    // // entities: [
+    // // __dirname + '/../**/*.entity{.ts,.js}',
+    // // ],
     // entities: [
-    // __dirname + '/../**/*.entity{.ts,.js}',
-    // ],
-    entities: [
-        "src/entities/*{.ts,.js}"
-      ],
-    subscribers: [
-        "src/subscriber/*{.ts,.js}"
-      ],
-    migrations: [
-        "src/migration/*{.ts,.js}"
-      ],
-    synchronize: true,
-    };
+    //     "src/entities/*{.ts,.js}"
+    //   ],
+    // subscribers: [
+    //     "src/subscriber/*{.ts,.js}"
+    //   ],
+    // migrations: [
+    //     "src/migration/*{.ts,.js}"
+    //   ],
+    // synchronize: true,
+    // };
 
-    export default config;
+    // export default config;
