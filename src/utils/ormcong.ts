@@ -18,28 +18,6 @@
           ],        
         synchronize: true,
         logging: false
-    })
+    });
     export default AppDataSource; 
-    // const config: DataSourceOptions = {
-    // type: 'postgres',
-    // host: process.env.POSTGRESQL_PATH,
-    // port: Number(process.env.POSTGRES_PORT),
-    // username: process.env.POSTGRES_USER,
-    // password: process.env.POSTGRES_PASSWORD,
-    // database: process.env.POSTGRES_DATABASENAME,
-    // // entities: [
-    // // __dirname + '/../**/*.entity{.ts,.js}',
-    // // ],
-    // entities: [
-    //     "src/entities/*{.ts,.js}"
-    //   ],
-    // subscribers: [
-    //     "src/subscriber/*{.ts,.js}"
-    //   ],
-    // migrations: [
-    //     "src/migration/*{.ts,.js}"
-    //   ],
-    // synchronize: true,
-    // };
-
-    // export default config;
+     

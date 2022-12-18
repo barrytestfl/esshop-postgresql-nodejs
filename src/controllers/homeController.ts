@@ -1,6 +1,6 @@
 import express,{ Request, request, Response, Router } from "express";
 import IController from "interfaces/IController";
-import {AppDataSource}  from '../utils/ormcong'
+import AppDataSource  from '../utils/ormcong'
 import Attribute from './../entities/attribute.model';
 
 class HomeController implements IController{
