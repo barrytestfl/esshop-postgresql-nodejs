@@ -1,5 +1,5 @@
 import { IsNumber, IsString, IsBoolean, IsOptional } from 'class-validator';
-import ProductImageDTO from './productImage.dto';
+
 export default class ProductsDTO{
     @IsNumber()
     public ProductId:number;
@@ -46,7 +46,7 @@ export default class ProductsDTO{
     @IsString()
     public ProductVideo:string;
     @IsOptional()
-    public Images?:ProductImageDTO;
+    public Images?:[string];
     @IsNumber()
     public InStock:number=0;
     @IsString()

@@ -9,7 +9,8 @@ export default class AttributeDTO{
   @IsString()
   public Description: string='';
   @IsString()
-  public AttributeType:string;
-  public GroupId:string;
+  public AttributeType:string='';
+  @IsNumber()  
+  public GroupId:number;
 
 }

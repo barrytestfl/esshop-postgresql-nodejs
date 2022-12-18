@@ -30,7 +30,7 @@
     // __dirname + '/../**/*.entity{.ts,.js}',
     // ],
     entities: [
-        "src/entity/*{.ts,.js}"
+        "src/entities/*{.ts,.js}"
       ],
     subscribers: [
         "src/subscriber/*{.ts,.js}"

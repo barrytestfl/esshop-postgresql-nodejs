@@ -7,7 +7,8 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "ts-node ./src/server.ts",
     "start-dev": "nodemon ./src/server.ts",
-    "build": "rm -rf ./build/ && tsc"
+    "build": "rm -rf ./build/ && tsc",
+    "typeorm:cli": "ts-node ./node_modules/typeorm/cli -f ./src/utils/ormcong.ts"
   },
   "keywords": ["node","postgresql","typeorm","typescript","online-shop rest api"],
   "author": "",
