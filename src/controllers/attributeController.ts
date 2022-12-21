@@ -1,6 +1,6 @@
 import express,{Router,Request,Response,NextFunction} from 'express';
 import IController from './../interfaces/IController';
- import ValidationModel from 'middlewares/validationModelMiddleware';
+ import ValidationModel from './../middlewares/validationModelMiddleware';
 import Attribute from './../entities/attribute.model';
 import AttributeDTO from './../metadata_DTO/attributes.dto';
 import AppDataSource from './../utils/ormcong';
@@ -15,7 +15,7 @@ class AttributeController implements IController{
     }
     private initializeRoutes(){
           
-    this.router.use('/', authMiddleware);
+    //this.router.use(this.path, authMiddleware);
 
         this.router
         .get(this.path,this.getAll)

@@ -2,10 +2,10 @@ import { IsString } from 'class-validator';
 
 class LogInDTO {
   @IsString()
-  public email: string;
+  public Email: string;
 
   @IsString()
-  public password: string;
+  public Password: string;
 }
 
 export default LogInDTO;

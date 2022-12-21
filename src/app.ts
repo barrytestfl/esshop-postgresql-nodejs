@@ -1,13 +1,17 @@
 import express from "express";
+import cors from 'cors';
+import multer from "multer";
 import cookieParser from 'cookie-parser'
 import IController from './interfaces/IController';
-import errormiddleware from './middlewares/errormiddleware';
+import errorMiddleware from './middlewares/errormiddleware';
+import errorHandler from './middlewares/error-handler.middleware';
 
 import AppDataSource from './utils/ormcong';
 
 
 class App{
     public app:express.Application;
+    private upload=multer();
     constructor(controllers:IController[]){
             this.app=express();
             this.connectToDataBase();
@@ -21,13 +25,24 @@ class App{
             })
     }
     private initializeMiddlewares(){
-        this.app.use(express.json());
+         // enable all CORS request
+        this.app.use(cors());
+        // parse incoming request body and append data to `req.body`
+        this.app.use(express.json({strict:false}));
         this.app.use(express.urlencoded({ extended: true })); 
-        this.app.use(cookieParser())
+        //enabe request.coockies
+        this.app.use(cookieParser());
+       // for parsing multipart/form-data
+        //this.app.use(this.upload.none); 
+        //access static path file
+        this.app.use(express.static('public'));
+      
     }
-    private initializeErrorsHandling(){
-            this.app.use(errormiddleware)
-    }
+    public initializeErrorsHandling(){
+        this.app.use(errorMiddleware);    
+       // this.app.use(errorHandler);
+            
+    } 
     private initializeControllers(controllers:IController[]){
             controllers.forEach((controller)=>{
                 this.app.use('/',controller.router);
@@ -40,7 +55,7 @@ class App{
             console.log('conected to database success!')
         })
         .catch((error) => console.log(error))
-                
+        console.log('cant conect to database !')
         }
 }
 export default App;

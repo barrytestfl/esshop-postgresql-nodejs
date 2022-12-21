@@ -7,14 +7,14 @@ import ValidationModel from 'middlewares/validationModelMiddleware';
 import IController from 'interfaces/IController';
 
 class attributeDetailController implements IController{
-    public path: string="attributeDetail";
+    public path: string="/attributeDetail";
     public router: express.Router=express.Router();
     private attributeDetailRepository=AppDataSource.getRepository(AttributeDetail);
     constructor(){
         this.initializeController();
     }
     private initializeController(){
-        this.router.use('/', authMiddleware);
+        this.router.use(this.path, authMiddleware);
         this.router
         .get(this.path,this.getAll)
         .get(`${this.path}/:id`,this.getById)

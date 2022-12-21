@@ -1,12 +1,12 @@
 import { Response,Request,NextFunction } from "express";
 import RequestWithUser from './../interfaces/RequestWithUser';
-import AuthenticationTokenMissingException from "exceptions/AuthenticationTokenMissingException";
-import WrongAuthenticationTokenException from "exceptions/WrongAuthenticationTokenException";
-import WrongCredentialsException from "exceptions/WrongCredentialsException";
+import AuthenticationTokenMissingException from "../exceptions/AuthenticationTokenMissingException";
+import WrongAuthenticationTokenException from "../exceptions/WrongAuthenticationTokenException";
+import WrongCredentialsException from "../exceptions/WrongCredentialsException";
 import * as jwt from 'jsonwebtoken'
 import IDataStoredInToken from './../interfaces/IDataStoredInToken';
-import AppDataSource from "utils/ormcong";
-import User from "entities/user.model";
+import AppDataSource from "../utils/ormcong";
+import User from "../entities/user.model";
 import IUser from './../interfaces/IUser';
 const authMiddleware=async(request: RequestWithUser, response: Response, next: NextFunction) =>{
     const userRepository=AppDataSource.getRepository(User);

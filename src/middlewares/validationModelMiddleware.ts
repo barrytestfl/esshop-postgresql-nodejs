@@ -5,6 +5,7 @@ import HttpException from './../exceptions/HttpException';
 
 function ValidationModel(type: any, skipMissingProperties:boolean = false):express.RequestHandler {
 return(req:express.Request, res:express.Response, next:express.NextFunction)=>{
+    console.log('req.body',req.body)
     const objectModel=plainToInstance(type, req.body );
     validate(objectModel,{skipMissingProperties})
     .then((errors:ValidationError[])=>{
