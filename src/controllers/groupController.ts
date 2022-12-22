@@ -1,10 +1,10 @@
 import express,{Request,Response,NextFunction} from 'express';
-import Group from 'entities/group.model';
-import GroupDTO from 'metadata_DTO/groups.dto';
-import AppDataSource from 'utils/ormcong';
-import authMiddleware from 'middlewares/authMiddleware';
-import ValidationModel from 'middlewares/validationModelMiddleware';
-import IController from 'interfaces/IController';
+import Group from '../entities/group.model';
+import GroupDTO from '../metadata_DTO/groups.dto';
+import AppDataSource from '../utils/ormcong';
+import authMiddleware from '../middlewares/authMiddleware';
+import ValidationModel from '../middlewares/validationModelMiddleware';
+import IController from '../interfaces/IController';
 
 class GroupController implements IController{
     public path: string="/group";
@@ -34,7 +34,7 @@ class GroupController implements IController{
     }
     private create=async(request:Request,response:Response)=>{
         const model:GroupDTO=request.body;
-        const data=await this.groupRepository.create(model);
+        const data=await this.groupRepository.insert(model);
         response.send(data);
     }
     private update=async(request:Request,response:Response)=>{

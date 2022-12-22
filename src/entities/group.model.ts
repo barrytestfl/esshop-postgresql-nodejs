@@ -1,6 +1,6 @@
 import { Entity,PrimaryGeneratedColumn,Column } from "typeorm";
 @Entity()
-class Brand{
+class Group{
     @PrimaryGeneratedColumn()
     public GroupId:number;
     @Column()
@@ -11,9 +11,10 @@ class Brand{
     public MetaKeyword:string;
     @Column()
     public MetaDescription?:string;
-    @Column()
+    @Column({nullable:true})
     public Priority?:number;
     @Column()
+    @Column({nullable:true})
     public ParentId?:number 
 }
-export default Brand;
+export default Group;

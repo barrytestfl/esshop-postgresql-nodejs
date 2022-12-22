@@ -24,9 +24,9 @@ class AuthenticationController implements IController{
       this.InitializeRoutes();
     }
     private InitializeRoutes(){
-        this.router.use(errormiddleware)
+        this.router
          .post(`${this.path}/login`,ValidationModel(LogInDTO),this.loggingIn)
-         .post(`${this.path}/rigister`,ValidationModel(UserDTO),this.register);
+         .post(`${this.path}/register`,ValidationModel(UserDTO),this.register);
     }
     
     private loggingIn = async (request: express.Request, response: express.Response,next:NextFunction) => {

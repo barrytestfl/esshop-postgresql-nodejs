@@ -1,10 +1,10 @@
 import express,{Request,Response,NextFunction} from 'express';
-import Brand from 'entities/brand.model';
-import BrandDTO from 'metadata_DTO/brands.dto';
-import AppDataSource from 'utils/ormcong';
-import authMiddleware from 'middlewares/authMiddleware';
-import ValidationModel from 'middlewares/validationModelMiddleware';
-import IController from 'interfaces/IController';
+import Brand from '../entities/brand.model';
+import BrandDTO from '../metadata_DTO/brands.dto';
+import AppDataSource from '../utils/ormcong';
+import authMiddleware from '../middlewares/authMiddleware';
+import ValidationModel from '../middlewares/validationModelMiddleware';
+import IController from '../interfaces/IController';
 
 class BrandController implements IController{
     public path: string="/brand";
@@ -34,7 +34,7 @@ class BrandController implements IController{
     }
     private create=async(request:Request,response:Response)=>{
         const model:BrandDTO=request.body;
-        const data=await this.brandRepository.create(model);
+        const data=await this.brandRepository.insert(model);
         response.send(data);
     }
     private update=async(request:Request,response:Response)=>{

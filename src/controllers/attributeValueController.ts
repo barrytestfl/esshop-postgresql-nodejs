@@ -1,10 +1,10 @@
 import express,{Request,Response,NextFunction} from 'express';
-import AttributeValue from 'entities/attributeValue.model';
-import AttributeValuesDTO from 'metadata_DTO/attributeValues.dto';
-import AppDataSource from 'utils/ormcong';
-import authMiddleware from 'middlewares/authMiddleware';
-import ValidationModel from 'middlewares/validationModelMiddleware';
-import IController from 'interfaces/IController';
+import AttributeValue from '../entities/attributeValue.model';
+import AttributeValuesDTO from '../metadata_DTO/attributeValues.dto';
+import AppDataSource from '../utils/ormcong';
+import authMiddleware from '../middlewares/authMiddleware';
+import ValidationModel from '../middlewares/validationModelMiddleware';
+import IController from '../interfaces/IController';
 
 class AttributeValueController implements IController{
     public path: string="/attributevalue";
@@ -34,7 +34,7 @@ class AttributeValueController implements IController{
     }
     private create=async(request:Request,response:Response)=>{
         const model:AttributeValuesDTO=request.body;
-        const data=await this.attributeValueRepository.create(model);
+        const data=await this.attributeValueRepository.insert(model);
         response.send(data);
     }
     private update=async(request:Request,response:Response)=>{

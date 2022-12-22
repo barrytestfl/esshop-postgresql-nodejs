@@ -1,3 +1,4 @@
+import { IsArray } from "class-validator";
 import { Entity,PrimaryGeneratedColumn,Column } from "typeorm";
 @Entity()
 class Product{
@@ -6,9 +7,9 @@ class Product{
     @Column()
     public ProductName:string;
     @Column()
-    public GroupId:string;
+    public GroupId:number;
     @Column()
-    public BrandId:string;
+    public BrandId:number;
     @Column()
     public UrlCode:string;
     @Column()
@@ -19,16 +20,17 @@ class Product{
     public IsActive:boolean;
     @Column()
     public Description:string;
-    //@IsArray()
-    public Strengths?:[string];
-    //@IsArray()
-    public Weaknesses?:[string];
-    //@IsArray()
-    public Colors?:[string];
+    @Column("text", { array: true, default: "{}" })
+    public Strengths?:string[];
+    @Column("text", { array: true, default: "{}" })
+    public Weaknesses?:string[];
+    @Column("text", { array: true, default: "{}" })
+    public Colors?:string[];
     @Column()
     public Weight:number;
-    
-    public Size?:{Width:number;Height:number};
+    @Column({ type: 'json',nullable:true})
+     
+    public Size:{Width?:number;Height?:number};
     @Column()
     public MetaTitle:string;
     @Column()
@@ -45,8 +47,8 @@ class Product{
     public Garranty:string;
     @Column()
     public ProductVideo:string;
-    // @Column()
-    // public Images?:[string];
+    @Column("text", { array: true, default: "{}" })
+    public Images?:string[];
     @Column()
     public InStock:number=0;
     @Column()

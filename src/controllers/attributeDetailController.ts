@@ -1,12 +1,12 @@
 import express,{Request,Response,NextFunction} from 'express';
-import AttributeDetail from 'entities/attributeDetail.model';
-import AttributeDetailDTO from 'metadata_DTO/attributeDetails.dto';
-import AppDataSource from 'utils/ormcong';
-import authMiddleware from 'middlewares/authMiddleware';
-import ValidationModel from 'middlewares/validationModelMiddleware';
-import IController from 'interfaces/IController';
+import AttributeDetail from '../entities/attributeDetail.model';
+import AttributeDetailDTO from '../metadata_DTO/attributeDetails.dto';
+import AppDataSource from '../utils/ormcong';
+import authMiddleware from '../middlewares/authMiddleware';
+import ValidationModel from '../middlewares/validationModelMiddleware';
+import IController from '../interfaces/IController';
 
-class attributeDetailController implements IController{
+class AttributeDetailController implements IController{
     public path: string="/attributeDetail";
     public router: express.Router=express.Router();
     private attributeDetailRepository=AppDataSource.getRepository(AttributeDetail);
@@ -34,7 +34,7 @@ class attributeDetailController implements IController{
     }
     private create=async(request:Request,response:Response)=>{
         const model:AttributeDetailDTO=request.body;
-        const data=await this.attributeDetailRepository.create(model);
+        const data=await this.attributeDetailRepository.insert(model);
         response.send(data);
     }
     private update=async(request:Request,response:Response)=>{
@@ -49,4 +49,4 @@ class attributeDetailController implements IController{
         response.send(data);
     }
 }
-export default attributeDetailController;
+export default AttributeDetailController;

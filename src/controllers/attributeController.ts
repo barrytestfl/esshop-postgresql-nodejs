@@ -15,7 +15,7 @@ class AttributeController implements IController{
     }
     private initializeRoutes(){
           
-    //this.router.use(this.path, authMiddleware);
+    this.router.use(this.path, authMiddleware);
 
         this.router
         .get(this.path,this.getAll)
@@ -36,7 +36,7 @@ class AttributeController implements IController{
     }
     private create=async(request:Request,response:Response)=>{
         const model:AttributeDTO=request.body;
-        const data=await this.attributeRepository.create(model);
+        const data=await this.attributeRepository.insert(model);
         response.send(data);
     }
     private update=async(request:Request,response:Response)=>{
