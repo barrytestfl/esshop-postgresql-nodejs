@@ -1,4 +1,5 @@
-import {Column,Entity,PrimaryGeneratedColumn} from 'typeorm';
+import { Column, Entity, JoinColumn, OneToMany, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import AttributeValue from './attributeValue.model';
 @Entity()
  class Attribute{
   @PrimaryGeneratedColumn()
@@ -13,5 +14,8 @@ import {Column,Entity,PrimaryGeneratedColumn} from 'typeorm';
   public AttributeType:string;
   @Column()  
   public GroupId:number;
+  
+  @OneToMany(()=>AttributeValue,(attibutevalue)=>attibutevalue.attribute, { cascade: true })   
+  public attributeValues:AttributeValue[]
 }
 export default Attribute;

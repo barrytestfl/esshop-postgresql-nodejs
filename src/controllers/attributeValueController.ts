@@ -29,7 +29,7 @@ class AttributeValueController implements IController{
     }
     private getById=async(request:Request,response:Response)=>{
         const id=Number(request.params.id);
-        const data=await this.attributeValueRepository.findBy({AttrbuteId:id});
+        const data=await this.attributeValueRepository.findBy({AttributeValueId:id});
         response.send(data);
     }
     private create=async(request:Request,response:Response)=>{
