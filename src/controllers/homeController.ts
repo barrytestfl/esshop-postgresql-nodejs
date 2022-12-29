@@ -1,12 +1,15 @@
 import express,{ Request, request, Response, Router } from "express";
 import IController from "../interfaces/IController";
+import IFilterProducts from "../interfaces/IFilterProducts";
+import IFilterAttributes from './../interfaces/IFilterAttributes';
 import AppDataSource  from '../utils/ormcong'
 import Attribute from '../entities/attribute.model';
 import AttributeValue from "../entities/attributeValue.model";
 import AttributeDetail from "../entities/attributeDetail.model";
 import Product from "../entities/product.model";
 import Brand from "../entities/brand.model";
-import Group from "../entities/group.model"; 
+import Group from "../entities/group.model";  
+
 
 class HomeController implements IController{
     public path: string="/";
@@ -30,27 +33,19 @@ class HomeController implements IController{
     }
     private filetrProducts=async (request:Request,response:Response)=>{
         const {id}=request.params;
-        let data=await this.productRepository.find(
-            {
-                where:{GroupId:Number(id)},
-                skip:0,
-                take:10,
-                order:{ProductId:'ASC'},
-                
-            
-            }
-        );
-        response.send(data);
+        let data=await this.listAll<IFilterProducts>("select * from filterProducts(0,'0','',0,0,0,2,0)");
+            response.send(data.filterproducts);
+    }
+    async listAll<T>(sql:string): Promise<T> {
+        let list = await AppDataSource.query(sql);
+        return list[0] as T;
     }
     private filterAttributes=async (request:Request,response:Response)=>{
         const {id}=request.params;
-        //const data=await this.attributeRepository.find({relations:{attributeValues:true}})
-         const data =AppDataSource.createQueryBuilder()
-         .select("att")         
-         .from(Attribute, "att")
-         .innerJoin(AttributeValue, "patt", "patt.AttributeId = att.AttributeId")
-         .getMany()
-        response.send(data)
+        const sql=`select * from filterattributes(0,'','',0,0)`;
+        let data=await this.listAll<IFilterAttributes>(sql);
+         
+        response.send(data.filterattributes.attributeValues);
     }
     
 }
