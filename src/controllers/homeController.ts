@@ -9,14 +9,13 @@ import AttributeDetail from "../entities/attributeDetail.model";
 import Product from "../entities/product.model";
 import Brand from "../entities/brand.model";
 import Group from "../entities/group.model";  
+import { In } from "typeorm";
 
 
 class HomeController implements IController{
     public path: string="/";
     public router: Router=express.Router();
     private attributeRepository=AppDataSource.getRepository(Attribute);
-    private attributeValueRepository=AppDataSource.getRepository(AttributeValue);
-    private attributeDetailRepository=AppDataSource.getRepository(AttributeDetail);
     private productRepository=AppDataSource.getRepository(Product);
     constructor(){
             this.initializeRoutes();
@@ -26,6 +25,10 @@ class HomeController implements IController{
         this.router.get(this.path,this.index)
         .get(`${this.path}filterAttributes/:id`,this.filterAttributes)
         .get(`${this.path}filetrProducts/:id`,this.filetrProducts)
+        .get(`${this.path}showcart/:id`,this.showcart)
+        .post(`${this.path}addcart`,this.addcart)
+        .post(`${this.path}pruchas`,this.pruchas);
+
     }
     private index=async (request:Request,response:Response)=>{
         let data=await this.attributeRepository.find();
@@ -47,6 +50,20 @@ class HomeController implements IController{
          
         response.send(data.filterattributes.attributeValues);
     }
-    
+    private showcart=async(request:Request,response:Response)=>{
+        const id:number[]=request.body;        
+        let data=await this.productRepository.findBy({ProductId:In(id)})         
+        response.send(data);
+    }
+    private addcart=async(request:Request,response:Response)=>{
+        const id=request.params;        
+        let data=await this.productRepository.findBy({ProductId:Number(id)})         
+        response.send(data);
+    }
+    private pruchas=async(request:Request,response:Response)=>{
+        const id=request.params;        
+        let data=await this.productRepository.findBy({ProductId:Number(id)})         
+        response.send(data);
+    }
 }
 export default HomeController;

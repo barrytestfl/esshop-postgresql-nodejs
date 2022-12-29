@@ -1,5 +1,5 @@
 import{IsNumber,IsString,IsOptional} from 'class-validator';
-class OrderItem{
+class OrderItemDTO{
     @IsOptional()
     @IsNumber()
     public OrderItemId:number;
@@ -22,4 +22,4 @@ class OrderItem{
     @IsString()
     public Images:string;
     }
-    export default OrderItem;
+    export default OrderItemDTO;
