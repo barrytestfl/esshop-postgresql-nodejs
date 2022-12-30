@@ -19,12 +19,12 @@ public Reference:string;
 @Column()
 public Colors:string;
 @Column()
-public Count:number;
+public Quantity:number;
 @Column()
 public Price:number; 
 @Column()
-public TotalPrice:number=0;
+public Total:number=0;
 @Column()
-public Images:string;
+public Image:string;
 }
 export default OrderItem;

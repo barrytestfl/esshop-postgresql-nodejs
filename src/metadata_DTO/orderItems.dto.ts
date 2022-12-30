@@ -14,12 +14,12 @@ class OrderItemDTO{
     @IsString()
     public Colors:string;
     @IsNumber()
-    public Count:number;
+    public Quantity:number;
     @IsNumber()
     public Price:number; 
     @IsNumber()
-    public TotalPrice:number=0;
+    public Total:number=0;
     @IsString()
-    public Images:string;
+    public Image:string;
     }
     export default OrderItemDTO;

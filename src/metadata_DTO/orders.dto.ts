@@ -14,11 +14,11 @@ class OrderDTO{
     @IsString()
     public Mobile:string;
     @IsNumber()
-    public Amount:number;
+    public AmountInvoice:number;
     @IsNumber()
     public Off:number;
     @IsNumber()
-    public Invoice:number;     
+    public TotalInvoice:number;     
     @IsString()
     public OrderStatus:string='pending';
 }

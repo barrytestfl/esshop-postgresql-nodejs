@@ -1,22 +1,19 @@
-import express,{ Request, request, Response, Router } from "express";
+import express,{ Request, Response, Router } from "express";
 import IController from "../interfaces/IController";
 import IFilterProducts from "../interfaces/IFilterProducts";
 import IFilterAttributes from './../interfaces/IFilterAttributes';
 import AppDataSource  from '../utils/ormcong'
-import Attribute from '../entities/attribute.model';
-import AttributeValue from "../entities/attributeValue.model";
-import AttributeDetail from "../entities/attributeDetail.model";
-import Product from "../entities/product.model";
-import Brand from "../entities/brand.model";
-import Group from "../entities/group.model";  
-import { In } from "typeorm";
-
+import Attribute from '../entities/attribute.model'; 
+import Product from "../entities/product.model"; 
+import ICart,{ICartItem, ICoockisProduct} from './../interfaces/ICart';
+import ShopingCart from "../services/shopingCart.service";
 
 class HomeController implements IController{
     public path: string="/";
     public router: Router=express.Router();
     private attributeRepository=AppDataSource.getRepository(Attribute);
     private productRepository=AppDataSource.getRepository(Product);
+    private shopingcart=new ShopingCart();
     constructor(){
             this.initializeRoutes();
     }
@@ -27,6 +24,7 @@ class HomeController implements IController{
         .get(`${this.path}filetrProducts/:id`,this.filetrProducts)
         .get(`${this.path}showcart/:id`,this.showcart)
         .post(`${this.path}addcart`,this.addcart)
+        .get(`${this.path}removecart/:id`,this.removecart)
         .post(`${this.path}pruchas`,this.pruchas);
 
     }
@@ -51,18 +49,42 @@ class HomeController implements IController{
         response.send(data.filterattributes.attributeValues);
     }
     private showcart=async(request:Request,response:Response)=>{
-        const id:number[]=request.body;        
-        let data=await this.productRepository.findBy({ProductId:In(id)})         
-        response.send(data);
+        
+        let cart:ICart={Items:[]};
+        const cookies = request.cookies;
+        if (cookies && cookies.Cart) {
+             cart=await this.shopingcart.getCart(JSON.parse(cookies.Cart+''));    
+        }        
+        response.setHeader('Set-Cookie', [this.shopingcart.createCookie(cart)]);
+        response.send(cart);
     }
     private addcart=async(request:Request,response:Response)=>{
-        const id=request.params;        
-        let data=await this.productRepository.findBy({ProductId:Number(id)})         
-        response.send(data);
+        const {ProductId,Quantity}:ICoockisProduct = request.body;
+        let cart:ICart={Items:[]};    
+        const cookies = request.cookies;
+        if (cookies && cookies.Cart) {
+             cart=await this.shopingcart.getCart(JSON.parse(cookies.Cart+''));    
+        }
+        cart=await this.shopingcart.addToCart({ProductId,Quantity},JSON.parse(cookies.Cart+''));    
+        response.setHeader('Set-Cookie', [this.shopingcart.createCookie(cart)]);
+        response.send(cart);
+         
+    }
+    private removecart=async(request:Request,response:Response)=>{
+        const {id} = request.params;    
+        let cart:ICart={Items:[]};    
+        const cookies = request.cookies;
+        if (cookies && cookies.Cart) {
+             cart=await this.shopingcart.getCart(JSON.parse(cookies.Cart+''));    
+        }
+        cart=await this.shopingcart.removeFromCart(Number(id),JSON.parse(cookies.Cart+''));    
+        response.setHeader('Set-Cookie', [this.shopingcart.createCookie(cart)]);
+        response.send(cart); 
     }
     private pruchas=async(request:Request,response:Response)=>{
         const id=request.params;        
-        let data=await this.productRepository.findBy({ProductId:Number(id)})         
+        let data=await this.productRepository.findBy({ProductId:Number(id)})  
+         response.setHeader('Set-Cookie', []);       
         response.send(data);
     }
 }

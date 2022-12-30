@@ -20,11 +20,11 @@ class Order{
     @OneToOne(() => Address, (address) => address.Id)
     public Address:Address;
     @Column()
-    public Amount:number;
+    public AmountInvoice:number;
     @Column()
     public Off:number;
     @Column()
-    public Invoice:number;
+    public TotalInvoice:number;
     @OneToMany(()=>OrderItem,(item)=>item.OrderId,{ cascade: true })
     public Items:OrderItem[];
     @Column()
