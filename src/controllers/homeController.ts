@@ -22,7 +22,7 @@ class HomeController implements IController{
         this.router.get(this.path,this.index)
         .get(`${this.path}filterAttributes/:id`,this.filterAttributes)
         .get(`${this.path}filetrProducts/:id`,this.filetrProducts)
-        .get(`${this.path}showcart/:id`,this.showcart)
+        .get(`${this.path}showcart`,this.showcart)
         .post(`${this.path}addcart`,this.addcart)
         .get(`${this.path}removecart/:id`,this.removecart)
         .post(`${this.path}pruchas`,this.pruchas);
@@ -48,44 +48,42 @@ class HomeController implements IController{
          
         response.send(data.filterattributes.attributeValues);
     }
-    private showcart=async(request:Request,response:Response)=>{
-        
+    public showcart=async(request:Request,response:Response)=>{
         let cart:ICart={Items:[]};
         const cookies = request.cookies;
-        if (cookies && cookies.Cart) {
-             cart=await this.shopingcart.getCart(JSON.parse(cookies.Cart+''));    
+        console.log(cookies.cart)
+        if (cookies && cookies.cart) {
+             cart=await this.shopingcart.getCart(JSON.parse(cookies.cart+''));    
         }        
-        response.setHeader('Set-Cookie', [this.shopingcart.createCookie(cart)]);
+       // response.setHeader('Set-Cookie', [this.shopingcart.createCookie(cart)]);
         response.send(cart);
     }
-    private addcart=async(request:Request,response:Response)=>{
+    public addcart=async(request:Request,response:Response)=>{
         const {ProductId,Quantity}:ICoockisProduct = request.body;
         let cart:ICart={Items:[]};    
         const cookies = request.cookies;
-        if (cookies && cookies.Cart) {
-             cart=await this.shopingcart.getCart(JSON.parse(cookies.Cart+''));    
+        if (cookies && cookies.cart) {
+            cart=await this.shopingcart.addToCart({ProductId,Quantity},(cookies && cookies.cart)?JSON.parse(cookies.cart+''):{Items:[]});    
         }
-        cart=await this.shopingcart.addToCart({ProductId,Quantity},JSON.parse(cookies.Cart+''));    
+        
         response.setHeader('Set-Cookie', [this.shopingcart.createCookie(cart)]);
         response.send(cart);
          
     }
-    private removecart=async(request:Request,response:Response)=>{
+    public removecart=async(request:Request,response:Response)=>{
         const {id} = request.params;    
         let cart:ICart={Items:[]};    
         const cookies = request.cookies;
-        if (cookies && cookies.Cart) {
-             cart=await this.shopingcart.getCart(JSON.parse(cookies.Cart+''));    
+        if (cookies && cookies.cart) {
+            cart=await this.shopingcart.removeFromCart(Number(id),JSON.parse(cookies.cart+''));    
         }
-        cart=await this.shopingcart.removeFromCart(Number(id),JSON.parse(cookies.Cart+''));    
         response.setHeader('Set-Cookie', [this.shopingcart.createCookie(cart)]);
         response.send(cart); 
     }
-    private pruchas=async(request:Request,response:Response)=>{
-        const id=request.params;        
-        let data=await this.productRepository.findBy({ProductId:Number(id)})  
+    public pruchas=async(request:Request,response:Response)=>{
+             
          response.setHeader('Set-Cookie', []);       
-        response.send(data);
+        response.send({mesaage:"no cart"});
     }
 }
 export default HomeController;

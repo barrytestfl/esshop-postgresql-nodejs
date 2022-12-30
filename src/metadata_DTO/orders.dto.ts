@@ -14,6 +14,8 @@ class OrderDTO{
     @IsString()
     public Mobile:string;
     @IsNumber()
+    public AddressId:number;
+    @IsNumber()
     public AmountInvoice:number;
     @IsNumber()
     public Off:number;

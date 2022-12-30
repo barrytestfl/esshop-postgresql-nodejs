@@ -16,6 +16,7 @@ class Order{
     @Column()
     public Mobile:string;
     @Column()
+    public AddressId:number;
     @JoinColumn()
     @OneToOne(() => Address, (address) => address.Id)
     public Address:Address;

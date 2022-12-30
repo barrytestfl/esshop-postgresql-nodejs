@@ -9,12 +9,14 @@ export default class ShopingCart{
         this.productRepository=AppDataSource.getRepository(Product);
     }
      
-    public async getCart(coockis:ICoockisProduct[]){
+    public async getCart(coockis:ICart){
         let cart:ICart={Items:[]};
-         for(let i=0;i<coockis.length;i++){
-          const  product= await this.productRepository.findOneBy({ProductId:coockis[i].ProductId}); 
+         for(let i=0;i<coockis.Items.length;i++){
+          const  product= await this.productRepository.findOneBy({ProductId:coockis.Items[i].ProductId}); 
           if(product){
-                let item:ICartItem={ProductId:product.ProductId,ProductName:product.ProductName,Reference:product.Reference,Colors:'product.Colors[0].toString()',Image:'',Price:product.Price,Quantity:coockis[i].Quantity,Total:(coockis[i].Quantity*product.Price)};
+            const pimage=product.Images?.at(0)||'';
+            const pcolor=product.Colors?.at(0)||'';    
+            let item:ICartItem={ProductId:product.ProductId,ProductName:product.ProductName,Reference:product.Reference,Colors:pcolor,Image:pimage,Price:product.Price,Quantity:coockis.Items[i].Quantity,Total:(coockis.Items[i].Quantity*product.Price)};
                 cart.Items.push(item)
             }
             cart.SubTotal = cart.Items.map(item => item.Total).reduce((acc, next) => acc + next);
@@ -23,14 +25,14 @@ export default class ShopingCart{
         
         return cart; 
     }
-    public async addToCart(coockiproduct:ICoockisProduct,coockis:ICoockisProduct[] ){
+    public async addToCart(coockiproduct:ICoockisProduct,coockis:ICart ){
         const {ProductId,Quantity}:ICoockisProduct = coockiproduct;    
         let product=await this.productRepository.findOneBy({ProductId:ProductId});
         let cart:ICart=await this.getCart(coockis);
         if(product){
             if (cart.Items.length>0){
                     let findIndex=cart.Items.findIndex((item)=>item.ProductId==ProductId);
-                    cart.Items[findIndex].Quantity=(Quantity+cart.Items[findIndex].Quantity);
+                    cart.Items[findIndex].Quantity=(Number(Quantity)+Number(cart.Items[findIndex].Quantity));
                     cart.Items[findIndex].Total=(cart.Items[findIndex].Quantity*cart.Items[findIndex].Price);
             }else{
                 let item:ICartItem={ProductId:product.ProductId,ProductName:product.ProductName,Reference:product.Reference,Colors:'product.Colors[0].toString()',Image:'',Price:product.Price,Quantity:Quantity,Total:(Quantity*product.Price)};
@@ -40,7 +42,7 @@ export default class ShopingCart{
         }
         return cart;
     }
-    public async removeFromCart(productId:number,coockis:ICoockisProduct[]){       
+    public async removeFromCart(productId:number,coockis:ICart){       
         let cart:ICart=await this.getCart(coockis);
             if (cart.Items.length>0){
                     cart.Items.forEach((item)=>item.ProductId!=productId);
