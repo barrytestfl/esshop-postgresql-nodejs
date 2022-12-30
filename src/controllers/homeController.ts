@@ -51,11 +51,11 @@ class HomeController implements IController{
     public showcart=async(request:Request,response:Response)=>{
         let cart:ICart={Items:[]};
         const cookies = request.cookies;
-        console.log(cookies.cart)
+        
         if (cookies && cookies.cart) {
              cart=await this.shopingcart.getCart(JSON.parse(cookies.cart+''));    
         }        
-       // response.setHeader('Set-Cookie', [this.shopingcart.createCookie(cart)]);
+        response.setHeader('Set-Cookie', [this.shopingcart.createCookie(cart)]);
         response.send(cart);
     }
     public addcart=async(request:Request,response:Response)=>{
@@ -63,9 +63,9 @@ class HomeController implements IController{
         let cart:ICart={Items:[]};    
         const cookies = request.cookies;
         if (cookies && cookies.cart) {
-            cart=await this.shopingcart.addToCart({ProductId,Quantity},(cookies && cookies.cart)?JSON.parse(cookies.cart+''):{Items:[]});    
+            cart=(cookies && cookies.cart)?JSON.parse(cookies.cart+''):{Items:[]}  ;  
         }
-        
+        cart=await this.shopingcart.addToCart({ProductId,Quantity},cart);    
         response.setHeader('Set-Cookie', [this.shopingcart.createCookie(cart)]);
         response.send(cart);
          
@@ -81,8 +81,9 @@ class HomeController implements IController{
         response.send(cart); 
     }
     public pruchas=async(request:Request,response:Response)=>{
-             
-         response.setHeader('Set-Cookie', []);       
+        let cart:ICart={Items:[],SubTotal:0};    
+          
+         response.setHeader('Set-Cookie', [this.shopingcart.createCookie(cart)]);       
         response.send({mesaage:"no cart"});
     }
 }

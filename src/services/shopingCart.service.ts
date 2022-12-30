@@ -10,7 +10,7 @@ export default class ShopingCart{
     }
      
     public async getCart(coockis:ICart){
-        let cart:ICart={Items:[]};
+        let cart:ICart={Items:[],SubTotal:0};
          for(let i=0;i<coockis.Items.length;i++){
           const  product= await this.productRepository.findOneBy({ProductId:coockis.Items[i].ProductId}); 
           if(product){
@@ -40,18 +40,16 @@ export default class ShopingCart{
             }
             cart.SubTotal = cart.Items.map(item => item.Total).reduce((acc, next) => acc + next);
         }
-        return cart;
+        return await this.getCart(cart);
     }
     public async removeFromCart(productId:number,coockis:ICart){       
         let cart:ICart=await this.getCart(coockis);
             if (cart.Items.length>0){
-                    cart.Items.forEach((item)=>item.ProductId!=productId);
-                    let findIndex=cart.Items.findIndex((item)=>item.ProductId==productId);
-                    cart.Items.splice(findIndex);
-                    cart.SubTotal = cart.Items.map(item => item.Total).reduce((acc, next) => acc + next);       
+                   let findIndex=cart.Items.findIndex((item)=>item.ProductId==productId);
+                   cart.Items.splice(findIndex);
             } 
             
-            return cart;
+            return await this.getCart(cart);
         }
         public createCookie(coockis:ICart) {
             return `cart=${JSON.stringify(coockis)}; HttpOnly; Max-Age=${60 * 60}`;
