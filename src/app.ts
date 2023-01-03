@@ -5,19 +5,22 @@ import cookieParser from 'cookie-parser'
 import IController from './interfaces/IController';
 import errorMiddleware from './middlewares/errormiddleware';
 import errorHandler from './middlewares/error-handler.middleware';
-
+ 
 import AppDataSource from './utils/ormcong';
 
 
 class App{
     public app:express.Application;
     private upload=multer();
+   
+
     constructor(controllers:IController[]){
             this.app=express();
             this.connectToDataBase();
             this.initializeMiddlewares();
             this.initializeControllers(controllers);
             this.initializeErrorsHandling();
+              
     }
     public listen(){
             this.app.listen(process.env.PORT,()=>{
@@ -49,12 +52,13 @@ class App{
             });
     }
     private async connectToDataBase(){
-        
+     
      AppDataSource.initialize()
         .then(() => {
-            console.log('conected to database success!')
+            console.log('conected to database success! redis ')
         })
         .catch((error) =>  console.log(`cant conect to database :${error}!`));       
         }
+        
 }
 export default App;

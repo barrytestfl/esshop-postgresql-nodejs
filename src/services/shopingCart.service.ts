@@ -1,10 +1,12 @@
 import { Repository } from "typeorm";
 import AppDataSource from "../utils/ormcong";
+import { ownRedis } from "./redisClient.redis";
 import Product from "../entities/product.model";
 import ICart,{ICartItem, ICoockisProduct} from './../interfaces/ICart';
 
 export default class ShopingCart{
     private productRepository:Repository<Product>;
+    private redis=new ownRedis();
     constructor(){
         this.productRepository=AppDataSource.getRepository(Product);
     }
@@ -22,7 +24,7 @@ export default class ShopingCart{
             cart.SubTotal = cart.Items.map(item => item.Total).reduce((acc, next) => acc + next);
                    
         };
-        
+        this.redis.client.set('cart',JSON.stringify(cart));
         return cart; 
     }
     public async addToCart(coockiproduct:ICoockisProduct,coockis:ICart ){

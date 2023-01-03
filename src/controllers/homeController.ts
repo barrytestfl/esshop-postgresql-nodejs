@@ -82,7 +82,7 @@ class HomeController implements IController{
     }
     public pruchas=async(request:Request,response:Response)=>{
         let cart:ICart={Items:[],SubTotal:0};    
-          
+        
          response.setHeader('Set-Cookie', [this.shopingcart.createCookie(cart)]);       
         response.send({mesaage:"no cart"});
     }
